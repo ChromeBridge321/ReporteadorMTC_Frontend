@@ -9,6 +9,8 @@ import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DatePicker } from 'primeng/datepicker';
+import { Router } from '@angular/router';
+import { RESTReporteResponse } from '../../reportes/models/reporte.model';
 interface Conexion {
   name: string;
   conexion: string;
@@ -21,7 +23,7 @@ interface Conexion {
   providers: [MessageService]
 })
 export class PozosComponent implements OnInit {
-  constructor(private pozosService: PozosService, private messageService: MessageService) { }
+  constructor(private pozosService: PozosService, private messageService: MessageService, private router: Router) { }
   loading: boolean = false;
   loadingReporte = signal<boolean>(false);
   date = signal<Date | undefined>(undefined);
@@ -62,10 +64,11 @@ export class PozosComponent implements OnInit {
     const IdsPozos: number[] = this.pozosSeleccionados().map(p => p.IdPozo);
     const fechaFormateada = this.formatearFecha(this.date());
     this.pozosService.generarReporte(IdsPozos, fechaFormateada, this.conexionSeleccionada.conexion).subscribe({
-      next: (data) => {
-        console.log(data);
+      next: (data: RESTReporteResponse) => {
+        console.log('Datos del reporte:', data);
         this.loadingReporte.set(false);
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Reporte generado correctamente' });
+        this.router.navigate(['/pozos/reporte/ver']);
       }, error: () => {
         this.loadingReporte.set(false);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al generar el reporte' });

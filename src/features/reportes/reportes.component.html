@@ -1,1 +1,30 @@
-<p>reportes.component works!</p>,
+<div class="p-4">
+  <h2>Reporte de Pozos</h2>
+
+  <div *ngFor="let pozo of pozosArray" class="mb-4">
+    <h3>{{ pozo.nombre }}</h3>
+
+    <p-table [value]="pozo.registros" [tableStyle]="{'min-width': '50rem'}">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Hora</th>
+          <th>Presión TP</th>
+          <th>Presión TR</th>
+          <th>Temp LE</th>
+          <th>Temp Descarga</th>
+          <th>Presión Succión</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-registro>
+        <tr>
+          <td>{{ registro.Hora_Formato }}</td>
+          <td>{{ registro.Presion_TP | number:'1.2-2' }}</td>
+          <td>{{ registro.Presion_TR | number:'1.2-2' }}</td>
+          <td>{{ registro.Temp_LE | number:'1.2-2' }}</td>
+          <td>{{ registro.Temp_Descarga | number:'1.2-2' }}</td>
+          <td>{{ registro.Presion_Succion | number:'1.2-2' }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
