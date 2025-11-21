@@ -68,7 +68,7 @@ export class PozosComponent implements OnInit {
         console.log('Datos del reporte:', data);
         this.loadingReporte.set(false);
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Reporte generado correctamente' });
-        this.router.navigate(['/pozos/reporte/ver']);
+        this.router.navigate(['reporte/pozos/ver']);
       }, error: () => {
         this.loadingReporte.set(false);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al generar el reporte' });

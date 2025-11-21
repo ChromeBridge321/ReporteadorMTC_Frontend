@@ -1,0 +1,5 @@
+li a.active {
+  background-color: #2416a3;
+  /* Tailwind's green-600 */
+  color: white;
+}

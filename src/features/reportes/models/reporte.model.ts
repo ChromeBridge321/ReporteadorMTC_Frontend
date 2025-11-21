@@ -15,7 +15,11 @@ export interface RESTReporte {
   Temperatura_Succion: number;
 }
 
-// Interfaz para la respuesta del endpoint (objeto con claves dinámicas)
-export interface RESTReporteResponse {
-  [nombrePozo: string]: RESTReporte[];
+// Interfaz para agrupar registros por pozo
+export interface RESTReportePorPozo {
+  nombrePozo: string;
+  registros: RESTReporte[];
 }
+
+// Interfaz para la respuesta del endpoint (array de pozos con sus registros)
+export type RESTReporteResponse = RESTReportePorPozo[];

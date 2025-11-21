@@ -6,9 +6,8 @@ export const routes: Routes = [
   {
     path: '', component: HomePageComponent,
     children: [
-      { path: 'pozos', component: PozosComponent },
-      { path: 'pozos/reporte', component: PozosComponent },
-      { path: 'pozos/reporte/ver', component: ReportesComponent }
+      { path: 'reporte/pozos/diario', component: PozosComponent },
+      { path: 'reporte/pozos/ver', component: ReportesComponent }
     ]
 
   }

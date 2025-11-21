@@ -1,30 +1,62 @@
-<div class="p-4">
-  <h2>Reporte de Pozos</h2>
+<div class="px-5 pt-5 w-full">
+  <h3 class="text-3xl font-bold">Visualizando Reportes</h3>
+</div>
+<div class="w-full p-5">
+  @for (pozos of pozosArray; track $index) {
+  <div class="w-full overflow-x-auto mb-10">
+    <h2 class="text-xl font-bold mb-2">{{ pozos.nombrePozo }}</h2>
 
-  <div *ngFor="let pozo of pozosArray" class="mb-4">
-    <h3>{{ pozo.nombre }}</h3>
+    <!-- Advertencia para pozos sin datos -->
+    @if (pozos.nombrePozo === 'Sin Datos') {
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 rounded" role="alert">
+      <p class="font-medium">⚠️ Advertencia: Datos no disponibles</p>
+      <p class="text-sm">El pozo seleccionado no contiene registros para la fecha especificada. La tabla muestra valores
+        vacíos o predeterminados.</p>
+    </div>
+    }
 
-    <p-table [value]="pozo.registros" [tableStyle]="{'min-width': '50rem'}">
-      <ng-template pTemplate="header">
+    <p-table [value]="pozos.registros" [tableStyle]="{ 'min-width': '1200px' }"
+      [tableStyleClass]="pozos.nombrePozo === 'Sin Datos' ? 'table-sin-datos' : ''" showGridlines stripedRows
+      [scrollable]="true" scrollHeight="500px">
+      <ng-template #header>
         <tr>
           <th>Hora</th>
-          <th>Presión TP</th>
-          <th>Presión TR</th>
-          <th>Temp LE</th>
-          <th>Temp Descarga</th>
-          <th>Presión Succión</th>
+          <th>Presion TP</th>
+          <th>Presion TR</th>
+          <th>LDD</th>
+          <th>Temperatura Pozo</th>
+          <th>Temperatura LE</th>
+          <th>Temperatura Descarga</th>
+          <th>Presion Succion</th>
+          <th>Presion Descarga</th>
+          <th>Velocidad</th>
+          <th>Temperatura Descarga</th>
+          <th>Temperatura Succion</th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-registro>
+      <ng-template #body let-pozos>
         <tr>
-          <td>{{ registro.Hora_Formato }}</td>
-          <td>{{ registro.Presion_TP | number:'1.2-2' }}</td>
-          <td>{{ registro.Presion_TR | number:'1.2-2' }}</td>
-          <td>{{ registro.Temp_LE | number:'1.2-2' }}</td>
-          <td>{{ registro.Temp_Descarga | number:'1.2-2' }}</td>
-          <td>{{ registro.Presion_Succion | number:'1.2-2' }}</td>
+          <td>{{ pozos.Hora_Formato}}</td>
+          <td>{{ pozos.Presion_TP | number:'1.2-2' }}</td>
+          <td>{{ pozos.Presion_TR | number:'1.2-2' }}</td>
+          <td>{{ pozos.LDD | number:'1.2-2' }}</td>
+          <td>{{ pozos.Temperatura_Pozo | number:'1.2-2' }}</td>
+          <td>{{ pozos.Temp_LE | number:'1.2-2' }}</td>
+          <td>{{ pozos.Temp_Descarga | number:'1.2-2' }}</td>
+          <td>{{ pozos.Presion_Succion | number:'1.2-2' }}</td>
+          <td>{{ pozos.Presion_Estatica_Descarga | number:'1.2-2' }}</td>
+          <td>{{ pozos.Velocidad | number:'1.2-2' }}</td>
+          <td>{{ pozos.Temperatura_Descarga | number:'1.2-2' }}</td>
+          <td>{{ pozos.Temperatura_Succion | number:'1.2-2' }}</td>
         </tr>
       </ng-template>
     </p-table>
   </div>
+  }
+
+  @if (!pozosArray) {
+  <div>
+    <h1>No hay datos disponibles volver a consultar</h1>
+  </div>
+  }
 </div>
