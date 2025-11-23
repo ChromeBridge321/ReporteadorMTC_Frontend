@@ -20,6 +20,7 @@ export interface RESTReporte {
 // Interfaz para agrupar registros por pozo
 export interface RESTReportePorPozo {
   nombrePozo: string;
+  reporte: string;
   registros: RESTReporte[];
 }
 

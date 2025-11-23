@@ -1,8 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './homePage/view/homePage.component';
 import { PozosComponent } from './pozos/view/pozos.component';
-import { ReporteMensualComponent } from './reportes/Mensual/reporteMensual.component';
-import { ReporteDiarioComponent } from './reportes/Diario/reporteDiario.component';
+import { ReporteComponent } from './reporte/reporte.component';
 export const routes: Routes = [
   {
     path: '', component: HomePageComponent,
@@ -17,8 +16,8 @@ export const routes: Routes = [
         data: { tipo: "mensual" },
         component: PozosComponent
       },
-      { path: 'reporte/pozos/diario/ver', component: ReporteDiarioComponent },
-      { path: 'reporte/pozos/mensual/ver', component: ReporteMensualComponent }
+      { path: 'reporte/pozos/diario/ver', component: ReporteComponent },
+      { path: 'reporte/pozos/mensual/ver', component: ReporteComponent }
     ]
 
   }

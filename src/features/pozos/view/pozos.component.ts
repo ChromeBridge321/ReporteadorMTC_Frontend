@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DatePicker } from 'primeng/datepicker';
 import { Router, ActivatedRoute } from '@angular/router';
-import { RESTReporteResponse } from '../../reportes/models/reporte.model';
+import { RESTReporteResponse } from '../../reporte/models/reporte.model';
 interface Conexion {
   name: string;
   conexion: string;

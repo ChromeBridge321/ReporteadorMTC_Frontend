@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RESTReporteResponse } from '../../reportes/models/reporte.model';
+import { RESTReporteResponse } from './models/reporte.model';
 import { TableModule } from 'primeng/table';
-import { PozosService } from '../../pozos/services/pozos.Service';
+import { PozosService } from '../pozos/services/pozos.Service';
 @Component({
-  selector: 'app-reporte-diario',
+  selector: 'app-reporte.component',
   imports: [CommonModule, TableModule],
-  templateUrl: './reporteDiario.component.html',
-  styleUrl: './reporteDiario.component.css'
+  templateUrl: './reporte.component.html',
+  styleUrl: './reporte.component.css',
 })
-export class ReporteDiarioComponent implements OnInit {
+export class ReporteComponent implements OnInit {
   pozosArray: RESTReporteResponse = [];
 
   constructor(private pozosService: PozosService) { }

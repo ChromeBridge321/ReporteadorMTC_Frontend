@@ -3,7 +3,7 @@ import { environment } from '../../../enviroments/enviroment.dev';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RESTPozo } from '../models/pozos.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { RESTReporteResponse } from '../../reportes/models/reporte.model';
+import { RESTReporteResponse } from '../../reporte/models/reporte.model';
 @Injectable({
   providedIn: 'root'
 })
