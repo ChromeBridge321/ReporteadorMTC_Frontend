@@ -5,7 +5,8 @@
         placeholder="Selecciona una conexion" class="w-full md:w-full" (onChange)="loadPozosData()" />
     </div>
     <div class="w-full ps-2 pb-4 flex justify-end items-center">
-      <p-datepicker class="px-2" [(ngModel)]="date" dateFormat="yy/mm/dd" placeholder="Seleccione una fecha"
+      <p-datepicker class="px-2" [(ngModel)]="date" [dateFormat]="tipoReporte === 'mensual' ? 'yy/mm' : 'yy/mm/dd'"
+        [placeholder]="tipoReporte === 'mensual' ? 'Seleccione mes y año' : 'Seleccione una fecha'" [view]="viewMode"
         [showIcon]="true" />
       <p-button label="Generar reporte" [icon]="'pi pi-file-excel'" [disabled]="isGenerarReporteDisabled()"
         [loading]="loadingReporte()" (click)="generearReporte()"></p-button>
@@ -33,5 +34,5 @@
       </tr>
     </ng-template>
   </p-table>
-  <p-toast />
+  <p-toast position="top-center" />
 </main>

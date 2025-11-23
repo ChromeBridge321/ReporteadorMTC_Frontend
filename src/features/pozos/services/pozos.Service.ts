@@ -26,13 +26,24 @@ export class PozosService {
     return this.http.get<RESTPozo[]>(`${this.baseUrl}?Conexion=${conexion}`, { headers: this.getHeaders() });
   }
 
-  generarReporte(Pozos: number[], Fecha: string, Conexion: string): Observable<RESTReporteResponse> {
+  generarReporteDiario(Pozos: number[], Fecha: string, Conexion: string): Observable<RESTReporteResponse> {
     let params = new URLSearchParams();
     Pozos.forEach(pozo => params.append('Pozos[]', pozo.toString()));
     params.append('Fecha', Fecha);
     params.append('Conexion', Conexion);
 
     return this.http.get<RESTReporteResponse>(`${this.baseUrl}/reporte?${params.toString()}`, { headers: this.getHeaders() }).pipe(
+      tap(data => this.reporteDataSubject.next(data))
+    );
+  }
+
+  generarReporteMensual(Pozos: number[], Fecha: string, Conexion: string): Observable<RESTReporteResponse> {
+    let params = new URLSearchParams();
+    Pozos.forEach(pozo => params.append('Pozos[]', pozo.toString()));
+    params.append('Fecha', Fecha);
+    params.append('Conexion', Conexion);
+
+    return this.http.get<RESTReporteResponse>(`${this.baseUrl}/reporte/mensual?${params.toString()}`, { headers: this.getHeaders() }).pipe(
       tap(data => this.reporteDataSubject.next(data))
     );
   }

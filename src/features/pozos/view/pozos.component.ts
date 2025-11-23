@@ -9,7 +9,7 @@ import { Select } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DatePicker } from 'primeng/datepicker';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { RESTReporteResponse } from '../../reportes/models/reporte.model';
 interface Conexion {
   name: string;
@@ -23,12 +23,19 @@ interface Conexion {
   providers: [MessageService]
 })
 export class PozosComponent implements OnInit {
-  constructor(private pozosService: PozosService, private messageService: MessageService, private router: Router) { }
+  constructor(
+    private pozosService: PozosService,
+    private messageService: MessageService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
   loading: boolean = false;
   loadingReporte = signal<boolean>(false);
   date = signal<Date | undefined>(undefined);
   pozosData: RESTPozo[] = [];
   pozosSeleccionados = signal<RESTPozo[]>([]);
+  tipoReporte: 'diario' | 'mensual' = 'diario';
+  viewMode: 'date' | 'month' = 'date';
 
   // Computed para determinar si el botón debe estar deshabilitado
   isGenerarReporteDisabled = computed(() => {
@@ -44,6 +51,11 @@ export class PozosComponent implements OnInit {
   conexionSeleccionada: Conexion = { name: '', conexion: '' };
 
   ngOnInit() {
+    // Obtener tipo de reporte desde los datos de la ruta
+    this.route.data.subscribe(data => {
+      this.tipoReporte = data['tipo'] || 'diario';
+      this.viewMode = this.tipoReporte === 'mensual' ? 'month' : 'date';
+    });
   }
 
   loadPozosData() {
@@ -63,23 +75,51 @@ export class PozosComponent implements OnInit {
     this.loadingReporte.set(true);
     const IdsPozos: number[] = this.pozosSeleccionados().map(p => p.IdPozo);
     const fechaFormateada = this.formatearFecha(this.date());
-    this.pozosService.generarReporte(IdsPozos, fechaFormateada, this.conexionSeleccionada.conexion).subscribe({
-      next: (data: RESTReporteResponse) => {
-        console.log('Datos del reporte:', data);
-        this.loadingReporte.set(false);
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Reporte generado correctamente' });
-        this.router.navigate(['reporte/pozos/ver']);
-      }, error: () => {
-        this.loadingReporte.set(false);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al generar el reporte' });
-      }
-    })
+
+    this.pozosService.clearReporteData();
+
+    if (this.tipoReporte === 'diario') {
+      this.pozosService.generarReporteDiario(IdsPozos, fechaFormateada, this.conexionSeleccionada.conexion).subscribe({
+        next: (data: RESTReporteResponse) => {
+          console.log('Datos del reporte:', data);
+          this.loadingReporte.set(false);
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Reporte generado correctamente' });
+          this.router.navigate(['reporte/pozos/diario/ver']);
+        }, error: () => {
+          this.loadingReporte.set(false);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al generar el reporte' });
+        }
+      })
+    } else {
+      this.pozosService.generarReporteMensual(IdsPozos, fechaFormateada, this.conexionSeleccionada.conexion).subscribe({
+        next: (data: RESTReporteResponse) => {
+          console.log('Datos del reporte:', data);
+          this.loadingReporte.set(false);
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Reporte generado correctamente' });
+          this.router.navigate(['reporte/pozos/mensual/ver']);
+        }, error: () => {
+          this.loadingReporte.set(false);
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al generar el reporte' });
+        }
+      })
+    }
+
+
+
+
   }
 
   formatearFecha(fecha: Date | undefined): string {
     if (!fecha) return '';
     const year = fecha.getFullYear();
     const month = String(fecha.getMonth() + 1).padStart(2, '0');
+
+    // Si es mensual, retornar solo YYYY-MM
+    if (this.tipoReporte === 'mensual') {
+      return `${year}-${month}`;
+    }
+
+    // Si es diario, retornar YYYY-MM-DD
     const day = String(fecha.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }

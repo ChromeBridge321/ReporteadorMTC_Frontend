@@ -1,7 +1,9 @@
 export interface RESTReporte {
   Pozo: string;
-  Hora: string;
-  Hora_Formato: string;
+  Hora?: string;
+  Hora_Formato?: string;
+  Dia_Semana?: string;
+  Fecha_Formato?: string;
   Presion_TP: number;
   Presion_TR: number;
   LDD: number;
