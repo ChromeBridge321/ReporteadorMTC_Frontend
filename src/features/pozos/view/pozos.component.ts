@@ -44,9 +44,10 @@ export class PozosComponent implements OnInit {
 
   conexiones: Conexion[] = [
     { name: 'Poza Rica', conexion: 'bd_MTC_PozaRica' },
-    { name: 'Conexion 2', conexion: 'DB2' },
-    { name: 'Conexion 3', conexion: 'DB3' },
-    { name: 'Conexion 4', conexion: 'DB4' },
+    { name: 'SAMARIA-LUNA', conexion: 'bd_SDMC_Motocomp' },
+    { name: 'MACUSPANA-MUSPAC', conexion: 'bd_MTC_Muspac' },
+    { name: 'BELLOTA', conexion: 'bd_Bellota' },
+    { name: '5P', conexion: 'bd_MTC_CincoP' },
   ];
   conexionSeleccionada: Conexion = { name: '', conexion: '' };
 

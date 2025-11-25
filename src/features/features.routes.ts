@@ -7,6 +7,11 @@ export const routes: Routes = [
     path: '', component: HomePageComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'reporte/pozos/diario',
+        pathMatch: 'full'
+      },
+      {
         path: 'reporte/pozos/diario',
         data: { tipo: "diario" },
         component: PozosComponent
