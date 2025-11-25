@@ -1,6 +1,7 @@
 export interface RESTReporte {
   Pozo: string;
   Hora?: string;
+  Fecha?: string;
   Hora_Formato?: string;
   Dia_Semana?: string;
   Fecha_Formato?: string;
@@ -8,13 +9,11 @@ export interface RESTReporte {
   Presion_TR: number;
   LDD: number;
   Temperatura_Pozo: number;
-  Temp_LE: number;
-  Temp_Descarga: number;
   Presion_Succion: number;
-  Presion_Estatica_Descarga: number;
+  Presion_Descarga: number;
   Velocidad: number;
-  Temperatura_Descarga: number;
-  Temperatura_Succion: number;
+  Temp_Descarga: number;
+  Temp_Succion: number;
 }
 
 // Interfaz para agrupar registros por pozo
