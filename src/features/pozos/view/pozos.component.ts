@@ -57,6 +57,7 @@ export class PozosComponent implements OnInit {
       this.tipoReporte = data['tipo'] || 'diario';
       this.viewMode = this.tipoReporte === 'mensual' ? 'month' : 'date';
     });
+
   }
 
   loadPozosData() {
@@ -76,13 +77,16 @@ export class PozosComponent implements OnInit {
     this.loadingReporte.set(true);
     const IdsPozos: number[] = this.pozosSeleccionados().map(p => p.IdPozo);
     const fechaFormateada = this.formatearFecha(this.date());
-
+    this.pozosService.clearPozosSeleccionados();
     this.pozosService.clearReporteData();
+    this.pozosService.clearFechaSeleccionada();
+
+    this.pozosService.setPozosSeleccionados(this.pozosSeleccionados());
+    this.pozosService.setFechaSeleccionada(fechaFormateada);
 
     if (this.tipoReporte === 'diario') {
       this.pozosService.generarReporteDiario(IdsPozos, fechaFormateada, this.conexionSeleccionada.conexion).subscribe({
         next: (data: RESTReporteResponse) => {
-          console.log('Datos del reporte:', data);
           this.loadingReporte.set(false);
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Reporte generado correctamente' });
           this.router.navigate(['reporte/pozos/diario/ver']);
@@ -94,7 +98,6 @@ export class PozosComponent implements OnInit {
     } else {
       this.pozosService.generarReporteMensual(IdsPozos, fechaFormateada, this.conexionSeleccionada.conexion).subscribe({
         next: (data: RESTReporteResponse) => {
-          console.log('Datos del reporte:', data);
           this.loadingReporte.set(false);
           this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Reporte generado correctamente' });
           this.router.navigate(['reporte/pozos/mensual/ver']);

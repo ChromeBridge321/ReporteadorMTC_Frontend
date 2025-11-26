@@ -10,8 +10,15 @@ import { RESTReporteResponse } from '../../reporte/models/reporte.model';
 export class PozosService {
   private baseUrl = `${environment.apiUrl}/pozos`;
   constructor(private http: HttpClient) { }
+
   private reporteDataSubject = new BehaviorSubject<RESTReporteResponse | null>(null);
   public reporteData$ = this.reporteDataSubject.asObservable();
+
+  private pozosSeleccionadosSubject = new BehaviorSubject<RESTPozo[]>([]);
+  pozosSeleccionados$ = this.pozosSeleccionadosSubject.asObservable();
+
+  private FechaSeleccionadaSubject = new BehaviorSubject<string | undefined>(undefined);
+  fechaSeleccionada$ = this.FechaSeleccionadaSubject.asObservable();
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json'
@@ -51,4 +58,26 @@ export class PozosService {
   clearReporteData() {
     this.reporteDataSubject.next(null);
   }
+
+  // Nuevo método para guardar pozos seleccionados
+  setPozosSeleccionados(pozos: RESTPozo[]) {
+    this.pozosSeleccionadosSubject.next(pozos);
+  }
+
+  // Nuevo método para limpiar pozos seleccionados
+  clearPozosSeleccionados() {
+    this.pozosSeleccionadosSubject.next([]);
+  }
+
+  // Nuevo método para guardar pozos seleccionados
+  setFechaSeleccionada(fecha: string) {
+    this.FechaSeleccionadaSubject.next(fecha);
+  }
+
+  // Nuevo método para limpiar pozos seleccionados
+  clearFechaSeleccionada() {
+    this.FechaSeleccionadaSubject.next('');
+  }
+
+
 }

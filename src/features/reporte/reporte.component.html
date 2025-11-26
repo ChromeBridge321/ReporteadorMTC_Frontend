@@ -1,11 +1,10 @@
 <div class="px-5 pt-5 w-full">
-  <h3 class="text-3xl font-bold">Visualizando Reporte {{pozosArray[0].reporte}}</h3>
+  <h3 class="text-3xl font-bold">Visualizando Reporte {{pozosArray[0].reporte}} | {{fechaSeleccionada}}</h3>
 </div>
 <div class="w-full p-5">
   @for (pozos of pozosArray; track $index) {
   <div class="w-full overflow-x-auto mb-10">
-    <h2 class="text-xl font-bold mb-2">{{ pozos.nombrePozo }}</h2>
-
+    <h2 class="text-xl font-bold mb-2">{{ pozosSeleccionados[$index].NombrePozo }}</h2>
     <!-- Advertencia para pozos sin datos -->
     @if (pozos.nombrePozo === 'Sin Datos') {
     <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 rounded" role="alert">
@@ -34,7 +33,7 @@
       </ng-template>
       <ng-template #body let-pozos>
         <tr>
-          <td>{{ pozos.Hora_Formato}}</td>
+          <td>{{ pozos.Hora_Formato ? pozos.Hora_Formato : pozos.Fecha_Formato }}</td>
           <td>{{ pozos.Presion_TP | number:'1.2-2' }}</td>
           <td>{{ pozos.Presion_TR | number:'1.2-2' }}</td>
           <td>{{ pozos.LDD | number:'1.2-2' }}</td>
@@ -47,12 +46,6 @@
         </tr>
       </ng-template>
     </p-table>
-  </div>
-  }
-
-  @if (!pozosArray) {
-  <div>
-    <h1>No hay datos disponibles volver a consultar</h1>
   </div>
   }
 </div>
