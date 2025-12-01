@@ -110,6 +110,18 @@ export class ReporteComponent implements OnInit {
         // I11:I34 - Temp_Descarga
         // J11:J34 - Temp_Succion
 
+        const estiloNegativo = f.NewStyle({
+          Fill: { Type: 'pattern', Pattern: 1, Color: ['#D20000'] },
+          Font: { Color: '#FFFFFF', Bold: true },
+          Alignment: { Horizontal: 'center', Vertical: 'center' },
+          Border: [
+            { Type: 'left', Color: '#000000', Style: 1 },
+            { Type: 'top', Color: '#000000', Style: 1 },
+            { Type: 'right', Color: '#000000', Style: 1 },
+            { Type: 'bottom', Color: '#000000', Style: 1 }
+          ]
+        });
+
         let rowNum = 11;
         pozo.registros.forEach((registro) => {
           // Solo insertar si estamos dentro del rango (11 a 34)
@@ -117,7 +129,14 @@ export class ReporteComponent implements OnInit {
             // Insertar fecha + hora en formato "fechaSeleccionada Hora_Formato"
             f.SetCellValue(sheetName, `A${rowNum}`, `${this.fechaSeleccionada} ${registro.Hora_Formato || ''}`);
             f.SetCellValue(sheetName, `B${rowNum}`, Number(registro.Presion_TP || 0));
-            f.SetCellValue(sheetName, `C${rowNum}`, Number(registro.Presion_TR || 0));
+            
+            // Presión TR - Aplicar estilo si es negativo
+            const presionTR = Number(registro.Presion_TR || 0);
+            f.SetCellValue(sheetName, `C${rowNum}`, presionTR);
+            if (presionTR < 0 && !estiloNegativo.error) {
+              f.SetCellStyle(sheetName, `C${rowNum}`, `C${rowNum}`, estiloNegativo.style);
+            }
+            
             f.SetCellValue(sheetName, `D${rowNum}`, Number(registro.LDD || 0));
             f.SetCellValue(sheetName, `E${rowNum}`, Number(registro.Temperatura_Pozo || 0));
             f.SetCellValue(sheetName, `F${rowNum}`, Number(registro.Presion_Succion || 0));
