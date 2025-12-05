@@ -1,15 +1,30 @@
-<main class="m-10 mb-0">
-  <div class="w-full flex flex-row justify-end items-center">
-    <div class="w-auto pe-2 pb-4">
-      <p-select [options]="conexiones" [(ngModel)]="conexionSeleccionada" optionLabel="name"
-        placeholder="Selecciona una conexion" class="w-full md:w-full" (onChange)="loadPozosData()" />
+<main class="mx-10 mt-6 mb-0">
+  <div class="flex flex-col gap-4 w-full mb-4 lg:grid lg:grid-cols-2">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:flex lg:justify-start lg:items-center lg:w-1/2">
+      <p-select fluid="true" [options]="conexiones" [(ngModel)]="conexionSeleccionada" optionLabel="name"
+        placeholder="Selecciona una conexión" (onChange)="loadPozosData()" />
+      <div class="lg:hidden">
+        <p-datepicker fluid="true" [(ngModel)]="date" [dateFormat]="tipoReporte === 'mensual' ? 'yy/mm' : 'yy/mm/dd'"
+          [placeholder]="tipoReporte === 'mensual' ? 'Seleccione mes y año' : 'Seleccione una fecha'" [view]="viewMode"
+          [showIcon]="true" />
+      </div>
+
+      <p-button class="hidden lg:block" fluid="true" label="Reconectar" icon="pi pi-refresh" (click)="loadPozosData()"
+        [disabled]="!conexionSeleccionada.name">
+      </p-button>
     </div>
-    <div class="w-full ps-2 pb-4 flex justify-end items-center">
-      <p-datepicker class="px-2" [(ngModel)]="date" [dateFormat]="tipoReporte === 'mensual' ? 'yy/mm' : 'yy/mm/dd'"
-        [placeholder]="tipoReporte === 'mensual' ? 'Seleccione mes y año' : 'Seleccione una fecha'" [view]="viewMode"
-        [showIcon]="true" />
-      <p-button label="Generar reporte" [icon]="'pi pi-file-excel'" [disabled]="isGenerarReporteDisabled()"
-        [loading]="loadingReporte()" (click)="generearReporte()"></p-button>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:flex lg:justify-end lg:items-center">
+      <div class="hidden lg:block">
+        <p-datepicker fluid="true" [(ngModel)]="date" [dateFormat]="tipoReporte === 'mensual' ? 'yy/mm' : 'yy/mm/dd'"
+          [placeholder]="tipoReporte === 'mensual' ? 'Seleccione mes y año' : 'Seleccione una fecha'" [view]="viewMode"
+          [showIcon]="true" />
+      </div>
+      <p-button class="lg:hidden" fluid="true" label="Reconectar" icon="pi pi-refresh" (click)="loadPozosData()"
+        [disabled]="!conexionSeleccionada.name">
+      </p-button>
+      <p-button fluid="true" label="Generar reporte" icon="pi pi-file-excel" [disabled]="isGenerarReporteDisabled()"
+        [loading]="loadingReporte()" (click)="generearReporte()">
+      </p-button>
     </div>
   </div>
   <p-table [value]="pozosData" [(selection)]="pozosSeleccionados" dataKey="IdPozo" [scrollable]="true"

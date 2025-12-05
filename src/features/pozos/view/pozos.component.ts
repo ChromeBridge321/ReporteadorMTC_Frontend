@@ -49,7 +49,7 @@ export class PozosComponent implements OnInit {
     { name: 'BELLOTA', conexion: 'bd_Bellota' },
     { name: '5P', conexion: 'bd_MTC_CincoP' },
   ];
-  conexionSeleccionada: Conexion = { name: '', conexion: '' };
+  conexionSeleccionada: Conexion = { name: 'Poza Rica', conexion: 'bd_MTC_PozaRica' };
 
   ngOnInit() {
     // Obtener tipo de reporte desde los datos de la ruta
@@ -58,11 +58,12 @@ export class PozosComponent implements OnInit {
       this.viewMode = this.tipoReporte === 'mensual' ? 'month' : 'date';
     });
 
+    this.loadPozosData("bd_MTC_PozaRica");
   }
 
-  loadPozosData() {
+  loadPozosData(conexion?: string) {
     this.loading = true;
-    this.pozosService.getData(this.conexionSeleccionada.conexion).subscribe({
+    this.pozosService.getData(conexion || this.conexionSeleccionada.conexion).subscribe({
       next: (data) => {
         this.pozosData = data;
         this.loading = false;

@@ -4,17 +4,18 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs/operators';
-
+import { DrawerModule } from 'primeng/drawer';
+import { Button } from "primeng/button";
 @Component({
   selector: 'app-home-page',
-  imports: [CommonModule, TableModule, RouterOutlet],
+  imports: [CommonModule, TableModule, RouterOutlet, DrawerModule, Button],
   templateUrl: './homePage.component.html',
   styleUrl: './homePage.component.css',
 })
 export class HomePageComponent {
   reportes: any[] = [];
   currentRoute: string = '';
-
+  visible2: boolean = false;
   constructor(private router: Router) {
     // Escuchar cambios de ruta
     this.router.events.pipe(
