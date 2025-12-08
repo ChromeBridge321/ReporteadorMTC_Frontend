@@ -67,9 +67,9 @@ export class PozosComponent implements OnInit {
       next: (data) => {
         this.pozosData = data;
         this.loading = false;
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Pozos cargados correctamente' });
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Pozos cargados correctamente: ' + this.conexionSeleccionada.name });
       }, error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los pozos' });
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los pozos: ' + this.conexionSeleccionada.name });
       }
     })
   }
