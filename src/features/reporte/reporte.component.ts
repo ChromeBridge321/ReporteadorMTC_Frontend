@@ -34,6 +34,8 @@ export class ReporteComponent implements OnInit {
     this.pozosService.fechaSeleccionada$.subscribe(fecha => {
       this.fechaSeleccionada = fecha;
     });
+
+
   }
 
   async exportarExcel() {
@@ -129,14 +131,14 @@ export class ReporteComponent implements OnInit {
             // Insertar fecha + hora en formato "fechaSeleccionada Hora_Formato"
             f.SetCellValue(sheetName, `A${rowNum}`, `${this.fechaSeleccionada} ${registro.Hora_Formato || ''}`);
             f.SetCellValue(sheetName, `B${rowNum}`, Number(registro.Presion_TP || 0));
-            
+
             // Presión TR - Aplicar estilo si es negativo
             const presionTR = Number(registro.Presion_TR || 0);
             f.SetCellValue(sheetName, `C${rowNum}`, presionTR);
             if (presionTR < 0 && !estiloNegativo.error) {
               f.SetCellStyle(sheetName, `C${rowNum}`, `C${rowNum}`, estiloNegativo.style);
             }
-            
+
             f.SetCellValue(sheetName, `D${rowNum}`, Number(registro.LDD || 0));
             f.SetCellValue(sheetName, `E${rowNum}`, Number(registro.Temperatura_Pozo || 0));
             f.SetCellValue(sheetName, `F${rowNum}`, Number(registro.Presion_Succion || 0));

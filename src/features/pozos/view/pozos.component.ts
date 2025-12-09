@@ -58,17 +58,31 @@ export class PozosComponent implements OnInit {
       this.viewMode = this.tipoReporte === 'mensual' ? 'month' : 'date';
     });
 
-    this.loadPozosData("bd_MTC_PozaRica");
+    // Verificar si ya hay pozos cargados para la conexión actual
+    if (this.pozosService.hasPozosCargados(this.conexionSeleccionada.conexion)) {
+      this.pozosData = this.pozosService.getPozosCargados() || [];
+    } else {
+      this.loadPozosData(this.conexionSeleccionada.conexion);
+    }
   }
 
   loadPozosData(conexion?: string) {
+    const conexionACargar = conexion || this.conexionSeleccionada.conexion;
+
+    // Si ya hay pozos cargados para esta conexión, no recargar
+    if (this.pozosService.hasPozosCargados(conexionACargar)) {
+      this.pozosData = this.pozosService.getPozosCargados() || [];
+      return;
+    }
+
     this.loading = true;
-    this.pozosService.getData(conexion || this.conexionSeleccionada.conexion).subscribe({
+    this.pozosService.getData(conexionACargar).subscribe({
       next: (data) => {
         this.pozosData = data;
         this.loading = false;
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Pozos cargados correctamente: ' + this.conexionSeleccionada.name });
       }, error: () => {
+        this.loading = false;
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al cargar los pozos: ' + this.conexionSeleccionada.name });
       }
     })
