@@ -25,17 +25,26 @@ export class PozosService {
 
   private conexionActualSubject = new BehaviorSubject<string | null>(null);
   conexionActual$ = this.conexionActualSubject.asObservable();
+
+  private nombreConexionSubject = new BehaviorSubject<string | null>(null);
+  nombreConexion$ = this.nombreConexionSubject.asObservable();
+
+  // Subject para la última conexión seleccionada
+  private ultimaConexionSubject = new BehaviorSubject<{ name: string; conexion: string } | null>(null);
+  ultimaConexion$ = this.ultimaConexionSubject.asObservable();
+
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json'
     });
   }
 
-  getData(conexion: string) {
+  getData(conexion: string, nombreConexion?: string) {
     return this.http.get<RESTPozo[]>(`${this.baseUrl}?Conexion=${conexion}`, { headers: this.getHeaders() }).pipe(
       tap((data) => {
         this.idsPozosCargadosSubject.next(data);
         this.conexionActualSubject.next(conexion);
+        this.nombreConexionSubject.next(nombreConexion || conexion);
       })
     );
   }
@@ -115,6 +124,21 @@ export class PozosService {
   // Método para obtener los pozos cargados
   getPozosCargados(): RESTPozo[] | undefined {
     return this.idsPozosCargadosSubject.value;
+  }
+
+  // Método para obtener el nombre de la conexión
+  getNombreConexion(): string | null {
+    return this.nombreConexionSubject.value;
+  }
+
+  // Método para guardar la última conexión seleccionada
+  setUltimaConexion(conexion: { name: string; conexion: string }) {
+    this.ultimaConexionSubject.next(conexion);
+  }
+
+  // Método para obtener la última conexión seleccionada
+  getUltimaConexion(): { name: string; conexion: string } | null {
+    return this.ultimaConexionSubject.value;
   }
 
 }

@@ -17,6 +17,7 @@ export class ReporteComponent implements OnInit {
   pozosArray: RESTReporteResponse = [];
   pozosSeleccionados: RESTPozo[] = [];
   fechaSeleccionada: string | undefined;
+  conexionActual: string | null = null;
   constructor(private pozosService: PozosService) { }
 
   ngOnInit() {
@@ -35,8 +36,14 @@ export class ReporteComponent implements OnInit {
       this.fechaSeleccionada = fecha;
     });
 
+    // Suscribirse al nombre de la conexión
+    this.pozosService.nombreConexion$.subscribe(nombre => {
+      this.conexionActual = nombre;
+    });
+
 
   }
+
 
   async exportarExcel() {
     try {
@@ -99,7 +106,8 @@ export class ReporteComponent implements OnInit {
 
         // Cambiar texto en celda merged D44:I44 - "Pozo NombrePozo"
         f.SetCellValue(sheetName, 'D44', `Pozo ${nombrePozo}`);
-
+        f.SetCellValue(sheetName, 'D6', `Activo De Extracción ${this.conexionActual || 'Conexión'}`);
+        f.SetCellValue(sheetName, 'D46', `Activo De Extracción ${this.conexionActual || 'Conexión'}`);
         // Insertar datos en los rangos especificados
         // A11:A34 - Hora_Formato
         // B11:B34 - Presion_TP
@@ -146,6 +154,7 @@ export class ReporteComponent implements OnInit {
             f.SetCellValue(sheetName, `H${rowNum}`, Number(registro.Velocidad || 0));
             f.SetCellValue(sheetName, `I${rowNum}`, Number(registro.Temp_Descarga || 0));
             f.SetCellValue(sheetName, `J${rowNum}`, Number(registro.Temp_Succion || 0));
+            f.SetCellValue(sheetName, `M${rowNum}`, Number(registro.Qiny || 0));
             rowNum++;
           }
         });
@@ -160,6 +169,149 @@ export class ReporteComponent implements OnInit {
           // Fila 37: MIN
           f.SetCellFormula(sheetName, `${col}37`, `=MIN(${col}11:${col}34)`);
         });
+
+        // Crear Gráfico 12 - Gráfico de líneas
+        const chart12: any = {
+          Type: excelize.Line,
+          Series: [
+            {
+              Name: `'${sheetName}'!$F$9:$F$10`,
+              Categories: `'${sheetName}'!$L$11:$L$34`,
+              Values: `'${sheetName}'!$F$11:$F$34`
+            },
+            {
+              Name: `'${sheetName}'!$G$9:$G$10`,
+              Categories: `'${sheetName}'!$L$11:$L$34`,
+              Values: `'${sheetName}'!$G$11:$G$34`
+            }
+          ],
+          Title: [
+            {
+              Text: 'Grafico 12'
+            }
+          ],
+          Legend: {
+            Position: 'bottom'
+          },
+          XAxis: {
+            Title: [
+              {
+                Text: 'Horas'
+              }
+            ]
+          },
+          YAxis: {
+            Title: [
+              {
+                Text: 'P Succ kg/cm2'
+              }
+            ]
+          },
+          Dimension: {
+            Width: 480,
+            Height: 240
+          }
+        };
+
+        const addChart12Result = f.AddChart(sheetName, 'G54', chart12);
+        if (addChart12Result.error) {
+          console.error('Error al crear gráfico:', addChart12Result.error);
+        }
+
+        // Crear Gráfico 9 - Gráfico de líneas
+        const chart9: any = {
+          Type: excelize.Line,
+          Series: [
+            {
+              Name: `'${sheetName}'!$M$8:$M$10`,
+              Categories: `'${sheetName}'!$L$11:$L$34`,
+              Values: `'${sheetName}'!$M$11:$M$34`
+            }
+          ],
+          Title: [
+            {
+              Text: 'Grafico 9'
+            }
+          ],
+          Legend: {
+            Position: 'bottom'
+          },
+          XAxis: {
+            Title: [
+              {
+                Text: 'Horas'
+              }
+            ]
+          },
+          YAxis: {
+            Title: [
+              {
+                Text: 'MMPCD'
+              }
+            ]
+          },
+          Dimension: {
+            Width: 480,
+            Height: 240
+          }
+        };
+
+        const addChart9Result = f.AddChart(sheetName, 'A54', chart9);
+        if (addChart9Result.error) {
+          console.error('Error al crear gráfico 9:', addChart9Result.error);
+        }
+
+        const chart8: any = {
+          Type: excelize.Line,
+          Series: [
+            {
+              Name: `'${sheetName}'!$B$9:$B$10`,
+              Categories: `'${sheetName}'!$L$11:$L$34`,
+              Values: `'${sheetName}'!$B$11:$B$34`
+            },
+            {
+              Name: `'${sheetName}'!$C$9:$C$10`,
+              Categories: `'${sheetName}'!$L$11:$L$34`,
+              Values: `'${sheetName}'!$C$11:$C$34`
+            },
+            {
+              Name: `'${sheetName}'!$D$9:$D$10`,
+              Categories: `'${sheetName}'!$L$11:$L$34`,
+              Values: `'${sheetName}'!$D$11:$D$34`
+            }
+          ],
+          Title: [
+            {
+              Text: 'Grafico 8'
+            }
+          ],
+          Legend: {
+            Position: 'bottom'
+          },
+          XAxis: {
+            Title: [
+              {
+                Text: 'Horas'
+              }
+            ]
+          },
+          YAxis: {
+            Title: [
+              {
+                Text: 'MMPCD'
+              }
+            ]
+          },
+          Dimension: {
+            Width: 480,
+            Height: 240
+          }
+        };
+
+        const addChart8Result = f.AddChart(sheetName, 'A70', chart8);
+        if (addChart8Result.error) {
+          console.error('Error al crear gráfico 8:', addChart8Result.error);
+        }
       }
 
       // Forzar recálculo completo al abrir el archivo

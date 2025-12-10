@@ -1,8 +1,9 @@
-<main class="mx-10 mt-6 mb-0">
+<main class="mb-6 mx-4 md:mx-6 lg:mx-10 mt-6 md:mb-0">
   <div class="flex flex-col gap-4 w-full mb-4 lg:grid lg:grid-cols-2">
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:flex lg:justify-start lg:items-center lg:w-1/2">
       <p-select fluid="true" [options]="conexiones" [(ngModel)]="conexionSeleccionada" optionLabel="name"
-        placeholder="Selecciona una conexión" (onChange)="loadPozosData()" />
+        placeholder="Selecciona una conexión"
+        (onChange)="loadPozosData(conexionSeleccionada.conexion, conexionSeleccionada.name)" />
       <div class="lg:hidden">
         <p-datepicker fluid="true" [(ngModel)]="date" [dateFormat]="tipoReporte === 'mensual' ? 'yy/mm' : 'yy/mm/dd'"
           [placeholder]="tipoReporte === 'mensual' ? 'Seleccione mes y año' : 'Seleccione una fecha'" [view]="viewMode"
@@ -10,7 +11,7 @@
       </div>
 
       <p-button class="hidden lg:block" fluid="true" label="Reconectar" icon="pi pi-refresh" (click)="loadPozosData()"
-        [disabled]="!conexionSeleccionada.name">
+        [disabled]="!conexionSeleccionada.name || loading">
       </p-button>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:flex lg:justify-end lg:items-center">
@@ -20,7 +21,7 @@
           [showIcon]="true" />
       </div>
       <p-button class="lg:hidden" fluid="true" label="Reconectar" icon="pi pi-refresh" (click)="loadPozosData()"
-        [disabled]="!conexionSeleccionada.name">
+        [disabled]="!conexionSeleccionada.name || loading">
       </p-button>
       <p-button fluid="true" label="Generar reporte" icon="pi pi-file-excel" [disabled]="isGenerarReporteDisabled()"
         [loading]="loadingReporte()" (click)="generearReporte()">
@@ -28,8 +29,8 @@
     </div>
   </div>
   <p-table [value]="pozosData" [(selection)]="pozosSeleccionados" dataKey="IdPozo" [scrollable]="true"
-    scrollHeight="500px" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '100%' }"
-    [rowsPerPageOptions]="[5, 10, 20]" [loading]="loading" showGridlines stripedRows>
+    scrollHeight="700px" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '100%' }"
+    [rowsPerPageOptions]="[10, 20 ,50]" [loading]="loading" showGridlines stripedRows>
     <ng-template #header>
       <tr>
         <th class="w-auto">Num.</th>
@@ -37,6 +38,14 @@
         <th class="w-auto flex flex-col text-center justify-center items-center">Todos ({{pozosData.length}})
           <p-tableHeaderCheckbox />
         </th>
+      </tr>
+      <tr>
+        <th></th>
+        <th>
+          <p-columnFilter type="text" field="NombrePozo" placeholder="Filtrar por nombre" ariaLabel="Filtrar por nombre"
+            filterOn="input" matchMode="contains" [showMenu]="false" filtericon="pi pi-search"></p-columnFilter>
+        </th>
+        <th></th>
       </tr>
     </ng-template>
     <ng-template #body let-pozosData let-index="rowIndex">

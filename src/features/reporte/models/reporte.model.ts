@@ -14,6 +14,7 @@ export interface RESTReporte {
   Velocidad: number;
   Temp_Descarga: number;
   Temp_Succion: number;
+  Qiny: number;
 }
 
 // Interfaz para agrupar registros por pozo
