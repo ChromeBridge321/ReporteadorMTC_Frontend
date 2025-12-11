@@ -21,8 +21,16 @@ export const routes: Routes = [
         data: { tipo: "mensual" },
         component: PozosComponent
       },
-      { path: 'reporte/pozos/diario/ver', component: ReporteComponent },
-      { path: 'reporte/pozos/mensual/ver', component: ReporteComponent }
+      {
+        path: 'reporte/pozos/diario/ver',
+        data: { tipo: "diario" },
+        component: ReporteComponent
+      },
+      {
+        path: 'reporte/pozos/mensual/ver',
+        data: { tipo: "mensual" },
+        component: ReporteComponent
+      }
     ]
 
   }
