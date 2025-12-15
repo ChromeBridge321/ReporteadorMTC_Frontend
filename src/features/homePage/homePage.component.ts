@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, Router, NavigationEnd } from '@angular/router';
+import { RouterOutlet, Router, NavigationEnd, RouterLinkWithHref } from '@angular/router';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { DrawerModule } from 'primeng/drawer';
 import { Button } from "primeng/button";
 @Component({
   selector: 'app-home-page',
-  imports: [CommonModule, TableModule, RouterOutlet, DrawerModule, Button],
+  imports: [CommonModule, TableModule, RouterOutlet, DrawerModule],
   templateUrl: './homePage.component.html',
   styleUrl: './homePage.component.css',
 })
@@ -35,5 +35,8 @@ export class HomePageComponent {
 
   isActive(route: string): boolean {
     return this.currentRoute.includes(route);
+  }
+  cambiarEstadoSidebar() {
+    this.visible2 = true;
   }
 }

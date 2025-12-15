@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RESTReporteResponse } from './models/reporte.model';
+import { RESTReporteResponse } from '../../core/models/reporte.model';
 import { TableModule } from 'primeng/table';
-import { PozosService } from '../pozos/services/pozos.Service';
-import { RESTPozo } from '../pozos/models/pozos.model';
+import { PozosService } from '../../core/services/pozos.Service';
+import { RESTPozo } from '../../core/models/pozos.model';
 import { Button } from 'primeng/button';
-import { GenerarExcelDiarioService } from './services/generarExcelDiario.service';
-import { GenerarExcelMensual } from './services/generarExcelMensual.service';
+import { GenerarExcelDiarioService } from '../../core/services/generarExcelDiario.service';
+import { GenerarExcelMensual } from '../../core/services/generarExcelMensual.service';
 import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-reporte.component',

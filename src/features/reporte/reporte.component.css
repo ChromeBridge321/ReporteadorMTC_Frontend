@@ -16,3 +16,28 @@
   color: #78716c !important;
   font-style: italic;
 }
+
+/* Estilo para valores negativos o cero */
+.valor-negativo {
+  background-color: #fecaca !important;
+  color: #991b1b !important;
+  font-weight: 500;
+}
+
+/* Estilos para esquinas redondeadas en las tablas */
+::ng-deep .p-datatable {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+::ng-deep .p-datatable .p-datatable-wrapper {
+  border-radius: 12px;
+}
+
+::ng-deep .p-datatable .p-datatable-thead>tr:first-child>th:first-child {
+  border-top-left-radius: 0px;
+}
+
+::ng-deep .p-datatable .p-datatable-thead>tr:first-child>th:last-child {
+  border-top-right-radius: 0px;
+}

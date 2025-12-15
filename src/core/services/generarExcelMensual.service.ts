@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { init } from 'excelize-wasm';
 import { RESTReporteResponse } from '../models/reporte.model';
-import { RESTPozo } from '../../pozos/models/pozos.model';
+import { RESTPozo } from '../models/pozos.model';
 
 @Injectable({
   providedIn: 'root'

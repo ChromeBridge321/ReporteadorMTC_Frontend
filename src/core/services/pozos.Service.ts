@@ -1,9 +1,9 @@
-import { Injectable, signal } from '@angular/core';
-import { environment } from '../../../enviroments/enviroment.dev';
+import { Injectable } from '@angular/core';
+import { environment } from '../../enviroments/enviroment.dev';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RESTPozo } from '../models/pozos.model';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { RESTReporteResponse } from '../../reporte/models/reporte.model';
+import { RESTReporteResponse } from '../models/reporte.model';
 @Injectable({
   providedIn: 'root'
 })

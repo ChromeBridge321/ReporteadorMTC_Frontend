@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { init } from 'excelize-wasm';
 import { RESTReporteResponse } from '../models/reporte.model';
-import { RESTPozo } from '../../pozos/models/pozos.model';
+import { RESTPozo } from '../models/pozos.model';
 
 @Injectable({
   providedIn: 'root'
@@ -109,14 +109,8 @@ export class GenerarExcelDiarioService {
             // Insertar fecha + hora en formato "fechaSeleccionada Hora_Formato"
             f.SetCellValue(sheetName, `A${rowNum}`, `${fechaSeleccionada} ${registro.Hora_Formato || ''}`);
             f.SetCellValue(sheetName, `B${rowNum}`, Number(registro.Presion_TP || 0));
-
-            // Presión TR - Aplicar estilo si es negativo
             const presionTR = Number(registro.Presion_TR || 0);
             f.SetCellValue(sheetName, `C${rowNum}`, presionTR);
-            if (presionTR < 0 && !estiloNegativo.error) {
-              f.SetCellStyle(sheetName, `C${rowNum}`, `C${rowNum}`, estiloNegativo.style);
-            }
-
             f.SetCellValue(sheetName, `D${rowNum}`, Number(registro.LDD || 0));
             f.SetCellValue(sheetName, `E${rowNum}`, Number(registro.Temperatura_Pozo || 0));
             f.SetCellValue(sheetName, `F${rowNum}`, Number(registro.Presion_Succion || 0));
@@ -140,7 +134,7 @@ export class GenerarExcelDiarioService {
           f.SetCellFormula(sheetName, `${col}37`, `=MIN(${col}11:${col}34)`);
         });
 
-        // Crear Gráfico 12 - Gráfico de líneas
+        // Crear Gráficos - Gráfico de líneas
         const chart12: any = {
           Type: excelize.Line,
           Series: [

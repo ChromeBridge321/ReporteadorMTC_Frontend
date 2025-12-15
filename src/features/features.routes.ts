@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { HomePageComponent } from './homePage/view/homePage.component';
-import { PozosComponent } from './pozos/view/pozos.component';
+import { HomePageComponent } from './homePage/homePage.component';
+import { PozosComponent } from './pozos/pozos.component';
 import { ReporteComponent } from './reporte/reporte.component';
 export const routes: Routes = [
   {

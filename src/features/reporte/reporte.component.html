@@ -1,14 +1,29 @@
-<div class="px-5 pt-5 w-full">
-  <div class="flex justify-between items-center mb-4">
-    <h3 class="text-3xl font-bold">Visualizando Reporte {{pozosArray[0]?.reporte}} | {{fechaSeleccionada}}</h3>
+<div class="py-4 sticky z-10 top-0 bg-blue-100 shadow-md border-b border-gray-300">
+  <div class="flex flex-col w-full md:flex-row md:justify-between md:items-center md:px-4">
+    <div class="w-full text-center px-4 md:px-0 md:w-3/4">
 
-    <!-- Botón de exportar a Excel -->
-    <p-button label="Exportar a Excel" icon="pi pi-file-excel" (onClick)="exportarExcel()" severity="success"
-      [disabled]="pozosArray.length === 0">
-    </p-button>
+
+      @if (pozosArray.length > 0 && pozosArray[0]?.reporte === "Mensual") {
+      <h3 class="text-2xl font-medium md:font-semibold lg:font-bold lg:text-3xl">Visualizando Reporte
+        {{pozosArray[0]?.reporte}} | {{fechaSeleccionada | date:'MMMM yyyy'}}
+      </h3>
+      } @else if (pozosArray.length > 0) {
+      <h3 class="text-2xl font-medium md:font-semibold lg:font-bold lg:text-3xl">Visualizando Reporte
+        {{pozosArray[0]?.reporte}} | {{fechaSeleccionada | date:'longDate'}}
+      </h3>
+      } @else {
+      <h3 class="text-2xl font-medium md:font-semibold lg:font-bold lg:text-3xl">Visualizando Reporte</h3>
+      }
+    </div>
+    <div class="w-full pt-2 px-4 md:pt-0 md:px-0 md:w-1/4">
+      <!-- Botón de exportar a Excel -->
+      <p-button fluid="true" label="Exportar a Excel" icon="pi pi-file-excel" (onClick)="exportarExcel()"
+        severity="success" [disabled]="pozosArray.length === 0">
+      </p-button>
+    </div>
   </div>
 </div>
-<div class="w-full p-5">
+<div class="w-full p-5 bg-white">
   @for (pozos of pozosArray; track $index) {
   <div class="w-full overflow-x-auto mb-10">
     <h2 class="text-xl font-bold mb-2">{{ pozosSeleccionados[$index].NombrePozo }}</h2>
@@ -38,18 +53,27 @@
           <th>Temperatura Succion</th>
         </tr>
       </ng-template>
-      <ng-template #body let-pozos>
+      <ng-template #body let-pozos let-rowData="rowData">
         <tr>
           <td>{{ pozos.Hora_Formato ? pozos.Hora_Formato : pozos.Fecha_Formato }}</td>
-          <td>{{ pozos.Presion_TP | number:'1.2-2' }}</td>
-          <td>{{ pozos.Presion_TR | number:'1.2-2' }}</td>
-          <td>{{ pozos.LDD | number:'1.2-2' }}</td>
-          <td>{{ pozos.Temperatura_Pozo | number:'1.2-2' }}</td>
-          <td>{{ pozos.Presion_Succion | number:'1.2-2' }}</td>
-          <td>{{ pozos.Presion_Descarga | number:'1.2-2' }}</td>
-          <td>{{ pozos.Velocidad | number:'1.2-2' }}</td>
-          <td>{{ pozos.Temp_Descarga | number:'1.2-2' }}</td>
-          <td>{{ pozos.Temp_Succion | number:'1.2-2' }}</td>
+          <td [class.valor-negativo]="pozos.Presion_TP <= 0 && pozosArray[$index].nombrePozo !== 'Sin Datos'">{{
+            pozos.Presion_TP | number:'1.2-2' }}</td>
+          <td [class.valor-negativo]="pozos.Presion_TR <= 0 && pozosArray[$index].nombrePozo !== 'Sin Datos'">{{
+            pozos.Presion_TR | number:'1.2-2' }}</td>
+          <td [class.valor-negativo]="pozos.LDD <= 0 && pozosArray[$index].nombrePozo !== 'Sin Datos'">{{ pozos.LDD |
+            number:'1.2-2' }}</td>
+          <td [class.valor-negativo]="pozos.Temperatura_Pozo <= 0 && pozosArray[$index].nombrePozo !== 'Sin Datos'">{{
+            pozos.Temperatura_Pozo | number:'1.2-2' }}</td>
+          <td [class.valor-negativo]="pozos.Presion_Succion <= 0 && pozosArray[$index].nombrePozo !== 'Sin Datos'">{{
+            pozos.Presion_Succion | number:'1.2-2' }}</td>
+          <td [class.valor-negativo]="pozos.Presion_Descarga <= 0 && pozosArray[$index].nombrePozo !== 'Sin Datos'">{{
+            pozos.Presion_Descarga | number:'1.2-2' }}</td>
+          <td [class.valor-negativo]="pozos.Velocidad <= 0 && pozosArray[$index].nombrePozo !== 'Sin Datos'">{{
+            pozos.Velocidad | number:'1.2-2' }}</td>
+          <td [class.valor-negativo]="pozos.Temp_Descarga <= 0 && pozosArray[$index].nombrePozo !== 'Sin Datos'">{{
+            pozos.Temp_Descarga | number:'1.2-2' }}</td>
+          <td [class.valor-negativo]="pozos.Temp_Succion <= 0 && pozosArray[$index].nombrePozo !== 'Sin Datos'">{{
+            pozos.Temp_Succion | number:'1.2-2' }}</td>
         </tr>
       </ng-template>
     </p-table>
