@@ -5,8 +5,7 @@ import { TableModule } from 'primeng/table';
 import { PozosService } from '../../core/services/pozos.Service';
 import { RESTPozo } from '../../core/models/pozos.model';
 import { Button } from 'primeng/button';
-import { GenerarExcelDiarioService } from '../../core/services/generarExcelDiario.service';
-import { GenerarExcelMensual } from '../../core/services/generarExcelMensual.service';
+import { GenerarExcelDiarioService, GenerarExcelMensual } from '../../core/services/excel';
 import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-reporte.component',
